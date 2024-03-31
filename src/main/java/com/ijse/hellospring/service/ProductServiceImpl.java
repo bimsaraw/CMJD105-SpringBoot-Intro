@@ -28,4 +28,21 @@ public class ProductServiceImpl implements ProductService{
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
+
+    @Override
+    public Product updateProduct(Long id, Product product) {
+        Product existProduct = productRepository.findById(id).orElse(null);
+
+        if(existProduct == null) {
+            return null;
+        }
+
+        existProduct.setName(product.getName());
+        existProduct.setPrice(product.getPrice());
+        existProduct.setQuantity(product.getQuantity());
+        existProduct.setCategory(product.getCategory());
+
+        return productRepository.save(existProduct);
+
+    }
 }
