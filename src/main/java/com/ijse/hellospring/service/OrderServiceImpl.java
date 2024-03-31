@@ -54,4 +54,23 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
         
     }
+
+    @Override
+    public Order removeProductFromOrder(Long orderId, Long productId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+
+        if(order == null) {
+            return null;
+        }
+
+        Product product = productRepository.findById(productId).orElse(null);
+
+        if(product == null) {
+            return null;
+        }
+
+        order.getOrderedProducts().remove(product);
+        order.setTotalPrice(order.getTotalPrice() - product.getPrice());
+        return orderRepository.save(order);
+    }
 }
